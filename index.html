@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasbeeh Digital Modern</title>
+    <style>
+        :root {
+            --primary-green: #1b4332;
+            --light-sage: #95d5b2;
+            --accent-gold: #ffeb3b;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #081c15 0%, #1b4332 50%, #2d6a4f 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 400px;
+            padding: 25px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 40px;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+
+        /* Input Teks Dzikir */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px;
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+            font-family: 'Poppins';
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input[type="text"]:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--light-sage);
+        }
+
+        /* Tampilan Teks Dzikir Aktif */
+        #active-dzikir {
+            font-size: 1.1rem;
+            color: var(--light-sage);
+            margin-bottom: 15px;
+            min-height: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .counter-wrapper {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 50%;
+            border: 3px solid var(--light-sage);
+            box-shadow: 0 0 30px rgba(149, 213, 178, 0.2);
+        }
+
+        #counter {
+            font-size: 5.5rem;
+            font-weight: 600;
+        }
+
+        .target-text {
+            position: absolute;
+            bottom: 30px;
+            font-size: 0.8rem;
+            color: var(--accent-gold);
+            opacity: 0.8;
+        }
+
+        .btn-hit {
+            width: 100%;
+            padding: 18px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 20px;
+            background: #d8f3dc;
+            color: var(--primary-green);
+            cursor: pointer;
+            transition: 0.1s;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-hit:active {
+            transform: scale(0.95);
+            background: var(--light-sage);
+        }
+
+        .footer-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+        }
+
+        .btn-small {
+            background: rgba(53, 146, 74, 0.05);
+            border: 1px solid rgba(110, 148, 101, 0.2);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+
+        select {
+            background: rgba(0,0,0,0.3);
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 10px;
+            outline: none;
+            font-size: 0.75rem;
+        }
+
+        /* Watermark Style */
+        .watermark {
+            margin-top: 25px;
+            font-size: 0.75rem;
+            opacity: 0.6;
+            letter-spacing: 1px;
+        }
+
+        .watermark a {
+            color: var(--light-sage);
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .watermark a:hover {
+            color: var(--accent-gold);
+            opacity: 1;
+        }
+
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <div class="input-group">
+        <input type="text" id="dzikir-input" placeholder="Ketik doa/dzikir di sini..." oninput="updateDzikirText()">
+    </div>
+
+    <div id="active-dzikir">Mulai Dzikir</div>
+    
+    <div class="counter-wrapper">
+        <div id="counter">0</div>
+        <div class="target-text">Target: <span id="target-display">33</span></div>
+    </div>
+    
+    <button class="btn-hit" onclick="increment()">HITUNG</button>
+    
+    <div class="footer-controls">
+        <button class="btn-small" onclick="reset()">Reset</button>
+        <select id="set-target" onchange="changeTarget()">
+            <option value="33">Target 33</option>
+            <option value="100">Target 100</option>
+            <option value="1000">Target 1000</option>
+        </select>
+    
+    </div>
+    <!-- Watermark GitHub -->
+    <div class="watermark">
+        Developed by <a href="https://github.com/bukanwani68" target="_blank">@bukanwani68</a>
+    </div>
+</div> <!-- Ini penutup class="container" -->
+
+<script>
+    let count = 0;
+    let target = 33;
+
+    function updateDzikirText() {
+        const input = document.getElementById('dzikir-input').value;
+        const display = document.getElementById('active-dzikir');
+        display.innerText = input || "Mulai Dzikir";
+    }
+
+    function increment() {
+        count++;
+        document.getElementById('counter').innerText = count;
+        
+        if (navigator.vibrate) {
+            navigator.vibrate(45);
+        }
+
+        if (count === target) {
+            const doa = document.getElementById('dzikir-input').value || "Dzikir";
+            alert("Alhamdulillah, " + doa + " sebanyak " + target + " kali selesai.");
+            reset();
+        }
+    }
+
+    function reset() {
+        count = 0;
+        document.getElementById('counter').innerText = count;
+    }
+
+    function changeTarget() {
+        target = parseInt(document.getElementById('set-target').value);
+        document.getElementById('target-display').innerText = target;
+        reset();
+    }
+</script>
+
+</body>
+</html>
