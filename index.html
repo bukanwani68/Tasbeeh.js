@@ -3,7 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tasbeeh Digital Modern</title>
+    <title>Tasbeeh Digital & Tracker</title>
+    <link rel="icon" type="image/png" href="tasbeeh-js.png">
+    <link rel="apple-touch-icon" href="tasbeeh-js.png">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Tasbeeh.js">
+    <meta name="theme-color" content="#1b4332">
+
     <style>
         :root {
             --primary-green: #1b4332;
@@ -12,22 +20,17 @@
             --glass-bg: rgba(255, 255, 255, 0.1);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #081c15 0%, #1b4332 50%, #2d6a4f 100%);
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start; /* Agar bisa scroll kalau list panjang */
             color: white;
-            overflow: hidden;
+            padding: 40px 0;
         }
 
         .container {
@@ -42,11 +45,6 @@
             text-align: center;
         }
 
-        /* Input Teks Dzikir */
-        .input-group {
-            margin-bottom: 20px;
-        }
-
         input[type="text"] {
             width: 100%;
             background: rgba(255, 255, 255, 0.05);
@@ -57,28 +55,15 @@
             text-align: center;
             font-family: 'Poppins';
             outline: none;
-            transition: 0.3s;
+            margin-bottom: 20px;
         }
 
-        input[type="text"]:focus {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: var(--light-sage);
-        }
-
-        /* Tampilan Teks Dzikir Aktif */
-        #active-dzikir {
-            font-size: 1.1rem;
-            color: var(--light-sage);
-            margin-bottom: 15px;
-            min-height: 1.5rem;
-            font-weight: 300;
-            letter-spacing: 1px;
-        }
+        #active-dzikir { color: var(--light-sage); margin-bottom: 15px; font-weight: 300; letter-spacing: 1px; }
 
         .counter-wrapper {
             position: relative;
-            width: 200px;
-            height: 200px;
+            width: 180px;
+            height: 180px;
             margin: 0 auto 25px;
             display: flex;
             justify-content: center;
@@ -86,21 +71,9 @@
             background: rgba(0, 0, 0, 0.2);
             border-radius: 50%;
             border: 3px solid var(--light-sage);
-            box-shadow: 0 0 30px rgba(149, 213, 178, 0.2);
         }
 
-        #counter {
-            font-size: 5.5rem;
-            font-weight: 600;
-        }
-
-        .target-text {
-            position: absolute;
-            bottom: 30px;
-            font-size: 0.8rem;
-            color: var(--accent-gold);
-            opacity: 0.8;
-        }
+        #counter { font-size: 4.5rem; font-weight: 600; }
 
         .btn-hit {
             width: 100%;
@@ -112,95 +85,79 @@
             background: #d8f3dc;
             color: var(--primary-green);
             cursor: pointer;
-            transition: 0.1s;
             box-shadow: 0 8px 15px rgba(0,0,0,0.2);
         }
 
-        .btn-hit:active {
-            transform: scale(0.95);
-            background: var(--light-sage);
+        .btn-hit:active { transform: scale(0.95); }
+
+        /* Section History */
+        .history-container {
+            margin-top: 30px;
+            text-align: left;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
         }
 
-        .footer-controls {
+        .history-title { font-size: 0.9rem; color: var(--light-sage); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+
+        .history-item {
+            background: rgba(255,255,255,0.05);
+            padding: 10px 15px;
+            border-radius: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 25px;
+            margin-bottom: 8px;
+            animation: slideIn 0.3s ease;
         }
 
-        .btn-small {
-            background: rgba(53, 146, 74, 0.05);
-            border: 1px solid rgba(110, 148, 101, 0.2);
-            color: white;
-            padding: 8px 15px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            cursor: pointer;
-        }
+        .history-info span { font-size: 0.85rem; color: var(--accent-gold); margin-left: 10px; }
 
-        select {
-            background: rgba(0,0,0,0.3);
-            color: white;
-            border: none;
-            padding: 8px;
-            border-radius: 10px;
-            outline: none;
-            font-size: 0.75rem;
-        }
+        .btn-delete { background: none; border: none; color: #ff6b6b; cursor: pointer; font-size: 1rem; }
 
-        /* Watermark Style */
-        .watermark {
-            margin-top: 25px;
-            font-size: 0.75rem;
-            opacity: 0.6;
-            letter-spacing: 1px;
-        }
+        .watermark { margin-top: 30px; font-size: 0.7rem; opacity: 0.5; }
+        .watermark a { color: var(--light-sage); text-decoration: none; }
 
-        .watermark a {
-            color: var(--light-sage);
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-
-        .watermark a:hover {
-            color: var(--accent-gold);
-            opacity: 1;
-        }
-
+        @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <div class="container">
-    <div class="input-group">
-        <input type="text" id="dzikir-input" placeholder="Ketik doa/dzikir di sini..." oninput="updateDzikirText()">
-    </div>
-
+    <input type="text" id="dzikir-input" placeholder="Masukkan nama dzikir..." oninput="updateDzikirText()">
+    
     <div id="active-dzikir">Mulai Dzikir</div>
     
     <div class="counter-wrapper">
         <div id="counter">0</div>
-        <div class="target-text">Target: <span id="target-display">33</span></div>
+        <div style="position: absolute; bottom: 25px; font-size: 0.7rem; color: var(--accent-gold);">
+            Target: <span id="target-display">33</span>
+        </div>
     </div>
     
     <button class="btn-hit" onclick="increment()">HITUNG</button>
     
-    <div class="footer-controls">
-        <button class="btn-small" onclick="reset()">Reset</button>
-        <select id="set-target" onchange="changeTarget()">
+    <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+        <button onclick="reset()" style="background:#1b4332; border-radius:5px; border:#193f2e; color:white; font-size:0.8rem; cursor:pointer;">Reset Angka</button>
+        <select id="set-target" onchange="changeTarget()" style="background:rgba(0,0,0,0.2); color:white; border:none; border-radius:5px;">
+            <option value="7">Target 7</option>
             <option value="33">Target 33</option>
             <option value="100">Target 100</option>
             <option value="1000">Target 1000</option>
         </select>
-    
     </div>
-    <!-- Watermark GitHub -->
+
+    <div class="history-container">
+        <div class="history-title">Riwayat Dzikir Kamu:</div>
+        <div id="history-list">
+            </div>
+    </div>
+
     <div class="watermark">
         Developed by <a href="https://github.com/bukanwani68" target="_blank">@bukanwani68</a>
     </div>
-</div> <!-- Ini penutup class="container" -->
+</div>
 
 <script>
     let count = 0;
@@ -208,23 +165,36 @@
 
     function updateDzikirText() {
         const input = document.getElementById('dzikir-input').value;
-        const display = document.getElementById('active-dzikir');
-        display.innerText = input || "Mulai Dzikir";
+        document.getElementById('active-dzikir').innerText = input || "Mulai Dzikir";
     }
 
     function increment() {
         count++;
         document.getElementById('counter').innerText = count;
         
-        if (navigator.vibrate) {
-            navigator.vibrate(45);
-        }
+        if (navigator.vibrate) navigator.vibrate(40);
 
         if (count === target) {
-            const doa = document.getElementById('dzikir-input').value || "Dzikir";
-            alert("Alhamdulillah, " + doa + " sebanyak " + target + " kali selesai.");
+            saveToHistory();
+            alert("Target tercapai! Tersimpan di riwayat.");
             reset();
         }
+    }
+
+    function saveToHistory() {
+        const dzikirName = document.getElementById('dzikir-input').value || "Dzikir Umum";
+        const historyList = document.getElementById('history-list');
+        
+        const item = document.createElement('div');
+        item.className = 'history-item';
+        item.innerHTML = `
+            <div class="history-info">
+                ✅ ${dzikirName} <span>(${target}x)</span>
+            </div>
+            <button class="btn-delete" onclick="this.parentElement.remove()">✕</button>
+        `;
+        
+        historyList.prepend(item);
     }
 
     function reset() {
